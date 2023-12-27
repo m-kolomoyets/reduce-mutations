@@ -1,4 +1,19 @@
-# `Array.prototype.reduce()` mutations guide ;)
+
+<h1><code>Array.prototype.reduce()`</code> mutations guide</h1>
+
+### Contents
+- [Abstract](#abstract)
+- [Scenarios](#scenarios)
+  - [Scenario 1 - Object constant](#scenario-1---object-constant)
+  - [Scenario 2 - Nested object](#scenario-2---nested-object)
+- [Solutions](#solutions)
+  - [Solution 1 - Spreading the initial value](#solution-1---spreading-the-initial-value)
+  - [Solution 2 - Not applying `.reduce()`](#solution-2---not-applying-reduce)
+- [Examples](#examples)
+  - [Launching the project](#launching-the-project)
+  - [Examples provided](#examples-provided)
+- [Issues](#issues)
+- [Contributing](#contributing)
 
 ---
 
@@ -167,4 +182,60 @@ const result = data.reduce(
 
 ### Solution 2 - Not applying `.reduce()`
 
-MDN provides some examples of ways we can prevent using `.reduce()` by creating the new instance of the object (spread or deep copy) and apply `.forEach()` loop with mutating the copy.
+[MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce#when_to_not_use_reduce) provides some examples of ways we can prevent using `.reduce()` by creating the new instance of the object (spread or deep copy) and apply `.forEach()` loop or `for...of` syntax with mutating the copy.
+
+❌ Incorrect by MDN:
+```ts
+const names = ["Alice", "Bob", "Tiff", "Bruce", "Alice"];
+const countedNames = names.reduce((allNames, name) => {
+  const currCount = allNames[name] ?? 0;
+  allNames[name] = currCount + 1;
+  // return allNames, otherwise the next iteration receives undefined
+  return allNames;
+}, Object.create(null));
+```
+
+✅ Correct by MDN:
+```ts
+const names = ["Alice", "Bob", "Tiff", "Bruce", "Alice"];
+const countedNames = Object.create(null);
+for (const name of names) {
+  const currCount = countedNames[name] ?? 0;
+  countedNames[name] = currCount + 1;
+}
+```
+
+## Examples
+
+I created this test application for demonstrating different behaviors of `.reduce()` with using different constant values
+
+### Launching the project
+
+1. Clone or fork
+2. run `pnpm install`
+3. run `pnpm dev`
+4. navigate to `http://127.0.0.1:5173/`
+
+> [!TIP]
+> You can switch the examples by clicking relevant button and logs will be displayed in 2 places:
+> - DevTools console
+> - Bottom part of viewport
+
+### Examples provided
+
+- Plain object
+  - object reference
+  - the spread copy
+- Nested object
+  - object reference
+  - the spread copy
+  - the spread copy with spread copies of nested objects
+
+
+## Issues
+
+In case of comments or issues - you are welcome!!!
+
+## Contributing
+
+If you have more examples of such behavior or others have smth to do with `.reduce()`, you are welcome as well!!!
