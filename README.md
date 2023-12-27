@@ -151,7 +151,7 @@ export const NESTED_EMPTY_OBJECT_SPREAD = {
 
 In case of one-level objects, like `EMPTY_OBJECT`, we can solve this issue by creating the copy of this constant as initial value for `.reduce()` like this:
 
-```ts{10}
+```ts
 import { EMPTY_OBJECT } from "@/constants";
 
 const result = data.reduce(
